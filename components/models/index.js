@@ -23,6 +23,10 @@ const Department = require('./Department.Model')
 const createDepartment = async () => {
     if((await Department.countDocuments()) == 0){
         new Department({
+            name: 'Nguyễn Phú Quí',
+            sign: 'qnp',
+        }).save()
+        new Department({
             name: 'Khoa Công Nghệ Thông Tin',
             sign: 'CNTT',
         }).save()
