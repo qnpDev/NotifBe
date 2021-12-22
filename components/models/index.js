@@ -13,19 +13,8 @@ const createUser = async () => {
                 password: await bcrypt.hash(process.env.ADMIN_PASSWORD, await bcrypt.genSalt(12)),
                 department: null,
             },
-            name: 'qnp',
+            name: 'Nguyễn Phú Quí',
         }).save()
-        // const ahihi = await new User({
-        //     per: {
-        //         isAdmin: true,
-        //         permission: 10,
-        //         username: 'npq',
-        //         password: await bcrypt.hash('12345', await bcrypt.genSalt(12)),
-        //         department: null,
-        //     },
-        //     name: 'qnp',
-        // }).save()
-        // console.log(ahihi)
 }
 createUser()
 
