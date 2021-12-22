@@ -60,9 +60,6 @@ class Auth{
         }
 
         const email = profileObj.email.split('@')
-        // if (email[1] !== 'student.tdtu.edu.vn'){
-        //     return res.json({success: false, msg: 'Only available for email @student.tdtu.edu.vn!'})
-        // }
 
         if (email[1] === 'student.tdtu.edu.vn' || email[1] === 'tdtu.edu.vn'){
             await User.findOne({ 'per.googleId': profileObj.googleId }).then(async exists => {
@@ -112,7 +109,7 @@ class Auth{
                 return res.json({success: true, token, refreshToken})
             })
         }else{
-            return res.json({success: false, msg: 'Only available for email @student.tdtu.edu.vn!'})
+            return res.json({success: false, msg: 'Only available for @student.tdtu.edu.vn or @tdtu.edu.vn!'})
         }
     }
 
