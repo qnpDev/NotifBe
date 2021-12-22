@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>qnp | Notification Server!</title>
+    <style>
+        .indexpage{
+            display: table;
+            min-width: 100vw;
+            min-height: 100vh;
+            /* background-image: linear-gradient(140deg, #EADEDB 0%, #BC70A4 50%, #BFD641 75%); */
+            background: #12c2e9;
+            background: -webkit-linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
+            background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
+        }
+        .indexpage-content{
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .text-small{
+            font-size: 10px;
+        }
+        .user-avatar{
+            border-radius: 50%;
+            max-width: 25v;
+            max-height: 25vh;
+            min-height: 25vh;
+            min-width: 25vh;
+        }
+    </style>
+</head>
+  <body>
+    <div class="indexpage">
+        <div className='indexpage-content card'>
+            <div className='card-header text-center'>
+                <div className='mt-3'>
+                    <h1 className='text-info'>Notification App</h1>
+                </div>
+                <div className='text-secondary text-small'>
+                    Advanced Web Programming
+                </div>
+            </div>
+            <div className='card-body text-center mb-4'>
+                <div className='mt-3'>
+                        <div className='row' key={k}>
+                            <div className='col-6 fw-bold d-inline-flex justify-content-end'>
+                                Front-end:
+                            </div>
+                            <div className='col-6 fst-italic fw-light d-inline-flex justify-content-start'>
+                                ReactJS
+                            </div>
+                        </div>
+                        <div className='row' key={k}>
+                            <div className='col-6 fw-bold d-inline-flex justify-content-end'>
+                                Back-end:
+                            </div>
+                            <div className='col-6 fst-italic fw-light d-inline-flex justify-content-start'>
+                                NodeJS
+                            </div>
+                        </div>
+                        <div className='row' key={k}>
+                            <div className='col-6 fw-bold d-inline-flex justify-content-end'>
+                                Database:
+                            </div>
+                            <div className='col-6 fst-italic fw-light d-inline-flex justify-content-start'>
+                                MongoDB
+                            </div>
+                        </div>
+                        <div className='row' key={k}>
+                            <div className='col-6 fw-bold d-inline-flex justify-content-end'>
+                                Designed & Coded:
+                            </div>
+                            <div className='col-6 fst-italic fw-light d-inline-flex justify-content-start'>
+                                Nguyễn Phú Quí
+                            </div>
+                        </div>
+                </div>
+                
+                <div className='mt-3'>
+                    <img 
+                        className='user-avatar'
+                        src='https://scontent.fdad3-2.fna.fbcdn.net/v/t1.6435-9/118674062_427946914852685_5667450515899727291_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=174925&_nc_ohc=VRA7Ie15N6AAX9w1QEz&_nc_ht=scontent.fdad3-2.fna&oh=00_AT8WWjF1ZxKHP0Xrx8qrojatQy_IT2egDDKwAHiptw6J0g&oe=61E5E35A'
+                        alt='Avatar'
+                    />
+                </div>
+                <div className='mt-1'>
+                    <h3 className='text-success'>Nguyễn Phú Quí</h3>
+                    <p className='text-small text-secoondary'>( qnp )</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

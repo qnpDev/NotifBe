@@ -1,0 +1,26 @@
+POST http://localhost:9000/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "npq",
+    "password": "12345"
+}
+
+###
+POST http://localhost:9000/auth/token HTTP/1.1
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5wcSIsInBlciI6MTAsImlkIjoiNjE4Yjg0ZGFmNzU1ZWVmMTNjNDlkNmM5IiwiaWF0IjoxNjM2NTM4MjMwLCJleHAiOjE2MzkxMzAyMzB9.XbPRHVc07PVujZJkz3aah-kdFD3kBbNiiey1zkoq690"
+}
+###
+
+POST http://localhost:9000/auth/logout HTTP/1.1
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5wcSIsInBlciI6MTAsImlkIjoiNjE4Yjg0ZGFmNzU1ZWVmMTNjNDlkNmM5IiwiaWF0IjoxNjM2NTM4MzkxLCJleHAiOjE2MzkxMzAzOTF9.ARkRvWje_2UiURD9lsuYqmSu4T8TAvB_CaWo6v2JdSI"
+}
+
+###
+GET http://localhost:9000/auth/google HTTP/1.1
