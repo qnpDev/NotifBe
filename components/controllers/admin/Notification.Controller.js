@@ -67,8 +67,12 @@ class NotificationController{
                             .populate('author', 'name avatar')
                             .then(response => {
                                 req.app.get('io').sockets.emit('notifNew', response)
-                                return res.json({success: true, data: response})
                         })
+                        await Notification.findById(save._id)
+                            .populate('author', 'name avatar')
+                            .then(response => {
+                                return res.json({success: true, data: response})
+                        }) 
                     }else
                         return res.json({success: false, msg: 'Add false!'})
                 }
