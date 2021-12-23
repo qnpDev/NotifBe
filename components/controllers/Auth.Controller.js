@@ -116,13 +116,13 @@ class Auth{
     async token(req, res) {
         const { refreshToken } = req.body
         if (refreshToken === null || !refreshToken)
-            return res.json({success: false, msg: 'not found'})
+            return res.json({success: false, msg: 'Not found'})
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
             if (err)
-                return res.json({success: false, msg: 'refreshToken die'})
+                return res.json({success: false, msg: 'RefreshToken die'})
             const user = await User.findById(decoded.id)
             if(!user){
-                return res.json({success: false, msg: 'refreshToken not found'})
+                return res.json({success: false, msg: 'User not found'})
             }
             if (user.refreshToken.includes(refreshToken)){
                 const userToken = {
@@ -137,6 +137,8 @@ class Auth{
                     success: true,
                     accessToken: token
                 })
+            }else{
+                return res.json({success: false, msg: 'RefreshToken not found'})
             }
         })
     }
