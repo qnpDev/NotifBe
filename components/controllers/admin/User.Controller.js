@@ -62,7 +62,7 @@ class UserController{
             if (err)
                 return res.json({success: false, msg: 'Delete false!'})
             else{
-                if (docs.avatar !== process.env.DEFAULT_AVATAR && docs.per.permission !== 0){
+                if (docs.avatar && docs.avatar !== process.env.DEFAULT_AVATAR && docs.per.permission !== 0){
                     const linkImg = docs.avatar.split('/')
                     fs.unlink('./public/images/' + linkImg[linkImg.length - 1], err => {
                         // if (err)
@@ -73,7 +73,7 @@ class UserController{
                     await Notification.find({author: id}).remove().exec()
                 }
                 await Post.find({author: id}).remove().exec()
-                
+
                 return res.json({success: true, msg: 'Delete successfully!'})
             } 
         }).clone()
