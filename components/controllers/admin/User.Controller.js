@@ -59,7 +59,7 @@ class UserController{
     async delete(req, res){
         const { id } = req.body
 
-        const remove = User.findByIdAndDelete(id)
+        const remove = await User.findByIdAndDelete(id)
 
         if(remove){
             if (remove.avatar && remove.avatar !== process.env.DEFAULT_AVATAR && remove.per.permission !== 0){
