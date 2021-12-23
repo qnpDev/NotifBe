@@ -1,4 +1,6 @@
 const User = require('../../models/User.Model')
+const Notification = require('../../models/Notification.Model')
+const Post = require('../../models/Post.Model')
 const mongoose = require('mongoose')
 require('dotenv').config()
 const bcrypt = require('bcryptjs')
@@ -56,7 +58,7 @@ class UserController{
     }
     async delete(req, res){
         const { id } = req.body
-        await User.findByIdAndDelete(id, (err, docs) => {
+        await User.findByIdAndDelete(id, async(err, docs) => {
             if (err)
                 return res.json({success: false, msg: 'Delete false!'})
             else{
@@ -67,6 +69,11 @@ class UserController{
                         //     console.log(err)
                     })
                 }
+                if (docs.per.permission > 0){
+                    await Notification.find({author: id}).remove().exec()
+                }
+                await Post.find({author: id}).remove().exec()
+                
                 return res.json({success: true, msg: 'Delete successfully!'})
             } 
         }).clone()
