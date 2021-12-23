@@ -159,12 +159,14 @@ class NotificationController{
                 }
             })
         }
-        await Notification.findByIdAndDelete(notifId, (err, docs) => {
-            if (err)
-                return res.json({success: false, msg: 'Delete False!'})
-            else
-                return res.json({success: true, msg: 'Delete Successful!'})
-        }).clone()
+
+        const remove = await Notification.findByIdAndDelete(notifId)
+
+        if(remove)
+            return res.json({success: true, msg: 'Delete Successful!'})
+        else
+            return res.json({success: false, msg: 'Delete False!'})
+        
     }
     
     async department(req, res){
