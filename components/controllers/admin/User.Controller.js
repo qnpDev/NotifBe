@@ -68,34 +68,14 @@ class UserController{
                 })
             }
             if (remove.per.permission > 0){
-                await Notification.find({author: id}).remove().exec()
+                await Notification.deleteMany({author: id})
             }
-            await Post.find({author: id}).remove().exec()
+            await Post.deleteMany({author: id})
 
             return res.json({success: true, msg: 'Delete successfully!'})
         }else{
             return res.json({success: false, msg: 'Delete false!'})
         }
-
-        // await User.findByIdAndDelete(id, async(err, docs) => {
-        //     if (err)
-        //         return res.json({success: false, msg: 'Delete false!'})
-        //     else{
-        //         if (docs.avatar && docs.avatar !== process.env.DEFAULT_AVATAR && docs.per.permission !== 0){
-        //             const linkImg = docs.avatar.split('/')
-        //             fs.unlink('./public/images/' + linkImg[linkImg.length - 1], err => {
-        //                 // if (err)
-        //                 //     console.log(err)
-        //             })
-        //         }
-        //         if (docs.per.permission > 0){
-        //             await Notification.find({author: id}).remove().exec()
-        //         }
-        //         await Post.find({author: id}).remove().exec()
-
-        //         return res.json({success: true, msg: 'Delete successfully!'})
-        //     } 
-        // }).clone()
     }
     async edit(req, res){
         if (req.error)
