@@ -35,6 +35,6 @@ route(app)
 
 //Index page
 const path = require('path');
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname,'/components/views/index.html'))
-})
+app.get('/', (req, res) => res.sendFile(path.join(__dirname,'/components/views/index.html')))
+// Err
+app.get('*', (req, res) => res.sendFile(path.join(__dirname,'/components/views/index.html')))
