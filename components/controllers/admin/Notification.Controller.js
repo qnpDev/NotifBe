@@ -62,11 +62,13 @@ class NotificationController{
                         file: reqFiles,
                     }).save()
                     if(save){
-                        await Notification.findById(save._id).populate('department', 'name sign').then(response => {
-                            req.app.get('io').sockets.emit('notifNew', response)
+                        await Notification.findById(save._id)
+                            .populate('department', 'name sign')
+                            .populate('author', 'name avatar')
+                            .then(response => {
+                                req.app.get('io').sockets.emit('notifNew', response)
+                                return res.json({success: true, data: response})
                         })
-                        
-                        return res.json({success: true, data: save})
                     }else
                         return res.json({success: false, msg: 'Add false!'})
                 }
@@ -135,7 +137,7 @@ class NotificationController{
             file: fileSave,
             updatedAt: Date.now(),
         })
-        const data = await Notification.findById(notifId)
+        const data = await Notification.findById(notifId).populate('author', 'name avatar')
         return res.json({success: true, data: data})
     }
     async delete(req, res){
