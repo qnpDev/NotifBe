@@ -15,8 +15,10 @@ app.use(cors({
 }))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
+
 app.use('/public/images', express.static(__dirname + '/public/images'))
 app.use('/public/files', express.static(__dirname + '/public/files'))
+app.use('/public', express.static(__dirname + '/public'))
 
 const server = app.listen(process.env.PORT || 9000, () => {
     console.log('qnp | server started!')
@@ -37,4 +39,4 @@ route(app)
 const path = require('path');
 app.get('/', (req, res) => res.sendFile(path.join(__dirname,'/components/views/index.html')))
 // Err
-app.get('*', (req, res) => res.sendFile(path.join(__dirname,'/components/views/index.html')))
+app.get('*', (req, res) => res.status(404).sendFile(path.join(__dirname,'/components/views/index.html')))
