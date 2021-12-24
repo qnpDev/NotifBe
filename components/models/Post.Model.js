@@ -3,7 +3,7 @@ const postSchema = mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     text: String,
     img: [String],
-    video: {type: String, default: null},
+    video: String,
     fell: String,
     like: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
