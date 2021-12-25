@@ -45,7 +45,7 @@ class PostController{
             req.app.get('io').sockets.emit('postNew', post)
             return res.json({success: true, data: post})
         }else
-            return res.json({success: false})
+            return res.json({success: false, msg: 'Add false!'})
     }
     async like(req, res){
         const { postId } = req.body
@@ -219,7 +219,7 @@ class PostController{
         const userId = req.decoded.id
         await Post.findById(postId).then(async response=>{
             if(response === null){
-                return res.json({success: false})
+                return res.json({success: false, msg: "Can not find post!"})
             }else{
                 await Post.findOneAndUpdate({_id: postId}, {
                     $push: {
@@ -236,7 +236,7 @@ class PostController{
                         req.app.get('io').sockets.emit('postCommentNew' + postId, comment)
                         return res.json({success: true, data: comment.comment})
                 }else
-                        return res.json({success: false})
+                        return res.json({success: false, msg: 'Add comment error!'})
                 })
             }
         })
