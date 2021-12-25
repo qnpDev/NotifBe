@@ -1,17 +1,22 @@
 const route = require('express').Router()
 const Post = require('../controllers/Post.Controller')
 const multer = require('multer')
+const cloudinary = require('../controllers/Cloudinary')
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './public/images/')
-    },
-    filename: (req, file, cb) => {
-        const filename = file.originalname.toLowerCase().split(' ').join('-')
-        cb(null, Date.now() + '-' + filename)
-    }
-})
-
+let storage
+if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+    storage = cloudinary
+}else{
+    storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, './public/images/')
+        },
+        filename: (req, file, cb) => {
+            const filename = file.originalname.toLowerCase().split(' ').join('-')
+            cb(null, Date.now() + '-' + filename)
+        }
+    })
+}
 let upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {

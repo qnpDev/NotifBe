@@ -28,7 +28,12 @@ class UserController{
             return res.json({success: false, msg: 'Username already exists!'})
         else{
             if (req.file){
-                const avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
+                let avatar 
+                if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+                    avatar = req.file.path
+                }else{
+                    avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
+                }
                 const save = await new User({
                     name,
                     avatar,
@@ -62,11 +67,14 @@ class UserController{
         const remove = await User.findByIdAndDelete(id)
 
         if(remove){
-            if (remove.avatar && remove.avatar !== process.env.DEFAULT_AVATAR && remove.per.permission !== 0){
+            if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+
+            }else if(remove.avatar && remove.avatar !== process.env.DEFAULT_AVATAR && remove.per.permission !== 0){
                 const linkImg = docs.avatar.split('/')
                 fs.unlink('./public/images/' + linkImg[linkImg.length - 1], err => {
                 })
             }
+            
             if (remove.per.permission > 0){
                 await Notification.deleteMany({author: id})
             }
@@ -101,16 +109,18 @@ class UserController{
             if(pass.length < 4)
                 return res.json({success: false, msg: 'Password at least 4 character!'})
             else if (req.file){
-                const avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
-
-
-                const linkImg = dataUser.avatar.split('/')
-                const path = './public/images/' + linkImg[linkImg.length - 1]
-                if (fs.existsSync(path)) {
-                    fs.unlink(path, err => {
-                    })
+                let avatar 
+                if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+                    avatar = req.file.path
+                }else{
+                    avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
+                    const linkImg = dataUser.avatar.split('/')
+                    const path = './public/images/' + linkImg[linkImg.length - 1]
+                    if (fs.existsSync(path)) {
+                        fs.unlink(path, err => {
+                        })
+                    }
                 }
-
 
                 await User.findByIdAndUpdate(id, {
                     name,
@@ -152,12 +162,17 @@ class UserController{
             }
         }else{
             if (req.file){
-                const avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
-                const linkImg = dataUser.avatar.split('/')
-                const path = './public/images/' + linkImg[linkImg.length - 1]
-                if (fs.existsSync(path)) {
-                    fs.unlink(path, err => {
-                    })
+                let avatar 
+                if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+                    avatar = req.file.path
+                }else{
+                    avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
+                    const linkImg = dataUser.avatar.split('/')
+                    const path = './public/images/' + linkImg[linkImg.length - 1]
+                    if (fs.existsSync(path)) {
+                        fs.unlink(path, err => {
+                        })
+                    }
                 }
                 await User.findByIdAndUpdate(id, {
                     name,

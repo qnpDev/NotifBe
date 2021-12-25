@@ -12,53 +12,60 @@ class DeparmentController{
         if (req.error)
             return res.json({success: false, msg: req.error})
         const { name, sign } = req.body
-        await Department.countDocuments({ $or: [ {name}, {sign} ]}, async(err, count) => {
-            if (count > 0)
-                return res.json({success: false, msg: 'Name or Sign already exists!'})
-            else{
-                if(req.file){
-                    const avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
-                    const newDepartment = await new Department({
-                        name,
-                        sign,
-                        avatar,
-                    }).save()
-                    if (newDepartment)
-                        return res.json({success: true, data: newDepartment})
-                    else
-                        return res.json({success: false, msg: 'Somethings wrong!'})
+        const count = await Department.countDocuments({ $or: [ {name}, {sign} ]})
+        if (count > 0)
+            return res.json({success: false, msg: 'Name or Sign already exists!'})
+        else{
+            if(req.file){
+                let avatar
+                if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+                    avatar = req.file.path
                 }else{
-                    const newDepartment = await new Department({
-                        name,
-                        sign,
-                    }).save()
-                    if (newDepartment)
-                        return res.json({success: true, data: newDepartment})
-                    else
-                        return res.json({success: false, msg: 'Somethings wrong!'})
+                    avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
                 }
-                
+                const newDepartment = await new Department({
+                    name,
+                    sign,
+                    avatar,
+                }).save()
+                if (newDepartment)
+                    return res.json({success: true, data: newDepartment})
+                else
+                    return res.json({success: false, msg: 'Somethings wrong!'})
+            }else{
+                const newDepartment = await new Department({
+                    name,
+                    sign,
+                }).save()
+                if (newDepartment)
+                    return res.json({success: true, data: newDepartment})
+                else
+                    return res.json({success: false, msg: 'Somethings wrong!'})
             }
-        }).clone()
+            
+        }
     }
     async delete(req, res){
         const { id } = req.body
-        await Department.findByIdAndDelete(id, (err, docs)=>{
-            if (err)
+        await Department.findByIdAndDelete(id).then(response=>{
+            if (!response)
                 return res.json({success: false, msg: 'Delete false!'})
             else{
+                if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
 
-                const linkImg = docs.avatar.split('/')
-                const path = './public/images/' + linkImg[linkImg.length - 1]
-                if (fs.existsSync(path)) {
-                    fs.unlink(path, err => {
-                    })
+                }else{
+                    const linkImg = docs.avatar.split('/')
+                    const path = './public/images/' + linkImg[linkImg.length - 1]
+                    if (fs.existsSync(path)) {
+                        fs.unlink(path, err => {
+                        })
+                    }
                 }
 
                 return res.json({success: true, msg: 'Delete successfully!'})
             }
                 
-        }).clone()
+        })
     }
     async edit(req, res){
         if (req.error)
@@ -69,15 +76,19 @@ class DeparmentController{
                 return res.json({success: false, msg: 'Not found!'})
             else{
                 if (req.file){
-                    const avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
-                    
-                    const linkImg = response.avatar.split('/')
-                    const path = './public/images/' + linkImg[linkImg.length - 1]
-                    if (fs.existsSync(path)) {
-                        fs.unlink(path, err => {
-                            if (err)
-                                return res.json({success: false, msg: 'Update false!'})
-                        })
+                    let avatar
+                    if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+                        avatar = req.file.path
+                    }else{
+                        avatar = req.protocol + '://' + req.get('host') + '/public/images/' + req.file.filename
+                        const linkImg = response.avatar.split('/')
+                        const path = './public/images/' + linkImg[linkImg.length - 1]
+                        if (fs.existsSync(path)) {
+                            fs.unlink(path, err => {
+                                if (err)
+                                    return res.json({success: false, msg: 'Update false!'})
+                            })
+                        }
                     }
 
                     await Department.findByIdAndUpdate(id, {

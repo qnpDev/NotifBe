@@ -24,12 +24,19 @@ class PostController{
             return res.json({success: false, msg: req.error})
 
         const reqFiles = []
-        const url = req.protocol + '://' + req.get('host')
+        
+        if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+            req.files.map(value => {
+                reqFiles.push(value.path)
+            })
+        }else{
+            const url = req.protocol + '://' + req.get('host')
 
-        req.files.map(value  => {
-            reqFiles.push(url + '/public/images/' + value.filename)
-        })
-
+            req.files.map(value  => {
+                reqFiles.push(url + '/public/images/' + value.filename)
+            })
+        }
+        
         const save = await new Post({
             author,
             text,
@@ -113,31 +120,48 @@ class PostController{
                     if(imgDel){
                         if(typeof imgDel === 'string' || imgDel instanceof String){
                             if (response.img && response.img.length > 0){
-                                const linkImg = imgDel.split('/')
-                                const path = './public/images/' + linkImg[linkImg.length - 1]
-                                if (fs.existsSync(path)) {
-                                    fs.unlink(path, err => {
-                                    })
+                                if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+                                
+                                }else{
+                                    const linkImg = imgDel.split('/')
+                                    const path = './public/images/' + linkImg[linkImg.length - 1]
+                                    if (fs.existsSync(path)) {
+                                        fs.unlink(path, err => {
+                                        })
+                                    }
                                 }
+                                
                             }
                         }else if(Array.isArray(imgDel) && imgDel.length > 0){
-                            imgDel.map(value => {
-                                const linkImg = value.split('/')
-                                const path = './public/images/' + linkImg[linkImg.length - 1]
-                                if (fs.existsSync(path)) {
-                                    fs.unlink(path, err => {
-                                    })
-                                }
-                            })
+                            if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+
+                            }else{
+                                imgDel.map(value => {
+                                    const linkImg = value.split('/')
+                                    const path = './public/images/' + linkImg[linkImg.length - 1]
+                                    if (fs.existsSync(path)) {
+                                        fs.unlink(path, err => {
+                                        })
+                                    }
+                                })
+                            }
+                            
                         }
                     }
 
                     const reqFiles = [];
-                    const url = req.protocol + '://' + req.get('host')
 
-                    req.files.map(value  => {
-                        reqFiles.push(url + '/public/images/' + value.filename)
-                    })
+                    if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+                        req.files.map(value => {
+                            reqFiles.push(value.path)
+                        })
+                    }else{
+                        const url = req.protocol + '://' + req.get('host')
+            
+                        req.files.map(value  => {
+                            reqFiles.push(url + '/public/images/' + value.filename)
+                        })
+                    }
 
                     let imgSave = []
                     if(imgOld){
@@ -186,14 +210,19 @@ class PostController{
             if(response !== null){
                 if(per >= 2 || response.author.toString() === author){
                     if (response.img && response.img.length > 0){
-                        response.img.map(value => {
-                            const linkImg = value.split('/')
-                            const path = './public/images/' + linkImg[linkImg.length - 1]
-                            if (fs.existsSync(path)) {
-                                fs.unlink(path, err => {
-                                })
-                            }
-                        })
+                        if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+                            
+                        }else{
+                            response.img.map(value => {
+                                const linkImg = value.split('/')
+                                const path = './public/images/' + linkImg[linkImg.length - 1]
+                                if (fs.existsSync(path)) {
+                                    fs.unlink(path, err => {
+                                    })
+                                }
+                            })
+                        }
+                        
                         
                     }
                     Post.findByIdAndDelete(id, (err, docs)=>{
