@@ -56,7 +56,7 @@ class Auth{
             audience: process.env.GOOGLE_CLIENT_ID,
         })
         if(!ticket){
-            return res.json({success: false, msg: 'Invalid token!'})
+            return res.json({success: false, msg: 'Auth false!!'})
         }
 
         const email = profileObj.email.split('@')

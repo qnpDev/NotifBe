@@ -2,35 +2,7 @@ const route = require('express').Router()
 const Users = require('../controllers/admin/User.Controller')
 const Department = require('../controllers/admin/Department.Controller')
 const Detail = require('../controllers/admin/Detail.Controller')
-const multer = require('multer')
-const cloudinary = require('../controllers/Cloudinary')
-
-let storage
-if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
-    storage = cloudinary
-}else{
-    storage = multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, './public/images/')
-        },
-        filename: (req, file, cb) => {
-            const filename = file.originalname.toLowerCase().split(' ').join('-')
-            cb(null, Date.now() + '-' + filename)
-        }
-    })
-}
-
-let upload = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-            cb(null, true);
-        } else {
-            cb(null, false);
-            req.error = 'Only .png, .jpg and .jpeg format allowed!';
-        }
-    }
-})
+const upload = require('../controllers/upload/Image')
 // User
 route.get('/users', Users.getUsers)
 route.post('/users/add', upload.single('image'), Users.add)
