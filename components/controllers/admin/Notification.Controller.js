@@ -60,6 +60,7 @@ class NotificationController{
                         important,
                         department,
                         file: reqFiles,
+                        createdAt: Date.now(),
                     }).save()
                     if(save){
                         await Notification.findById(save._id)

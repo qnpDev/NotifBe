@@ -27,6 +27,7 @@ class DeparmentController{
                     name,
                     sign,
                     avatar,
+                    createdAt: Date.now(),
                 }).save()
                 if (newDepartment)
                     return res.json({success: true, data: newDepartment})
@@ -36,6 +37,7 @@ class DeparmentController{
                 const newDepartment = await new Department({
                     name,
                     sign,
+                    createdAt: Date.now(),
                 }).save()
                 if (newDepartment)
                     return res.json({success: true, data: newDepartment})

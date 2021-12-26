@@ -43,7 +43,7 @@ class UserController{
                         password: await bcrypt.hash(pass, await bcrypt.genSalt(12)),
                         department,
                     },
-    
+                    createdAt: Date.now(),
                 }).save()
                 return res.json({success: true, data: save})
             }else{
@@ -55,7 +55,7 @@ class UserController{
                         password: await bcrypt.hash(pass, await bcrypt.genSalt(12)),
                         department,
                     },
-    
+                    createdAt: Date.now(),
                 }).save()
                 return res.json({success: true, data: save})
             }

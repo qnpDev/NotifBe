@@ -74,6 +74,7 @@ class Auth{
                         },
                         name: profileObj.name,
                         avatar: profileObj.imageUrl,
+                        createdAt: Date.now(),
                     }).save()
                     const user = {
                         per: 0,

@@ -42,6 +42,7 @@ class PostController{
             text,
             img: reqFiles,
             video,
+            createdAt: Date.now(),
         }).save()
 
         const post = await Post.findById(save._id)
@@ -255,6 +256,7 @@ class PostController{
                         comment : {
                             author: userId,
                             text,
+                            createdAt: Date.now(),
                         }
                     }
                 }).then(async response2=> {
