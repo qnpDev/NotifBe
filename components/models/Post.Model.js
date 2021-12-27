@@ -21,5 +21,6 @@ const postSchema = mongoose.Schema({
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: null},
 })
+postSchema.index({ createdAt: -1, updatedAt: -1 })
 const Post = mongoose.model('Post', postSchema)
 module.exports = Post

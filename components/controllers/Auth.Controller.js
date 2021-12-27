@@ -8,18 +8,21 @@ class Auth{
     async login(req, res) {
         const { username, password } = req.body
         
+        if (username.match('^[a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9](?<![-?+?*$]{6,}.*)$') === null){
+            return res.json({success: false, msg: 'Username must two characters at least and have no special characters!'})
+        }
+
         const find = await User.findOne({
-            'per.username' : username,
-            // 'per.isAdmin' : true,
+            'per.username' : username.toLowerCase(),
         })
 
         if (find === null)
-            res.json({success: false})
+            return res.json({success: false, msg: 'Invalid username or password!'})
         else{
             bcrypt.compare(password, find.per.password, async (err, success) => {
                 if (success){
                     const user = {
-                        username,
+                        username: find.per.username,
                         per: find.per.permission,
                         id: find._id
                     }
@@ -30,16 +33,16 @@ class Auth{
                         expiresIn: 60 * 60 * 24 * 30
                     })
                     await User.findOneAndUpdate({
-                        'per.username' : username,
+                        'per.username' : username.toLowerCase(),
                         'per.isAdmin' : true,
                         }, {
                             $push: {
                                 refreshToken: refreshToken,
                             }
                     })
-                    res.json({success: true, token: token, refreshToken: refreshToken})
+                    return res.json({success: true, token: token, refreshToken: refreshToken})
                 }else 
-                    res.json({success: false})
+                    return  res.json({success: false, msg: 'Invalid username or password!'})
             })
         }
     }
@@ -78,7 +81,7 @@ class Auth{
                     }).save()
                     const user = {
                         per: 0,
-                        id: newUser._id
+                        id: newUser._id,
                     }
                     token = jwt.sign(user, process.env.TOKEN_SECRET, {
                         expiresIn: 60 * 5
@@ -88,8 +91,8 @@ class Auth{
                     })
                 }else{
                     const user = {
-                        per: 0,
-                        id: exists._id
+                        per: exists.per.permission,
+                        id: exists._id,
                     }
                     token = jwt.sign(user, process.env.TOKEN_SECRET, {
                         expiresIn: 60 * 5

@@ -20,10 +20,13 @@ class UserController{
             return res.json({success: false, msg: req.error})
         const { name, username, pass, department, per } = req.body
 
+        if (username.match('^[a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9](?<![-?+?*$]{6,}.*)$') === null){
+            return res.json({success: false, msg: 'Username must two characters at least and have no special characters!'})
+        }
         if(!pass || pass.length < 4)
             return res.json({success: false, msg: 'Password at least 4 character!'})
 
-        const count = await User.countDocuments({ 'per.username': username })
+        const count = await User.countDocuments({ 'per.username': username.toLowerCase() })
         if (count > 0)
             return res.json({success: false, msg: 'Username already exists!'})
         else{
@@ -39,7 +42,7 @@ class UserController{
                     avatar,
                     per: {
                         permission: per,
-                        username,
+                        username: username.toLowerCase(),
                         password: await bcrypt.hash(pass, await bcrypt.genSalt(12)),
                         department,
                     },
@@ -51,7 +54,7 @@ class UserController{
                     name,
                     per: {
                         permission: per,
-                        username,
+                        username: username.toLowerCase(),
                         password: await bcrypt.hash(pass, await bcrypt.genSalt(12)),
                         department,
                     },
@@ -90,6 +93,10 @@ class UserController{
             return res.json({success: false, msg: req.error})
         const { id, name, username, pass, department, permission, wallpaper } = req.body
         
+        if (username.match('^[a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9](?<![-?+?*$]{6,}.*)$') === null){
+            return res.json({success: false, msg: 'Username must two characters at least and have no special characters!'})
+        }
+
         let dataUser
         await User.findById(id).then(response => {
             if (response !== null)
@@ -99,7 +106,7 @@ class UserController{
         })
 
         const count = await User.countDocuments({ 
-            'per.username': username,
+            'per.username': username.toLowerCase(),
             _id: { $nin: [id] },
         })
         if (count > 0)
@@ -129,7 +136,7 @@ class UserController{
                     updatedAt: Date.now(),
                     per: {
                         ...dataUser.per,
-                        username,
+                        username: username.toLowerCase(),
                         password: await bcrypt.hash(pass, await bcrypt.genSalt(12)),
                         department,
                         permission,
@@ -148,7 +155,7 @@ class UserController{
                     updatedAt: Date.now(),
                     per: {
                         ...dataUser.per,
-                        username,
+                        username: username.toLowerCase(),
                         password: await bcrypt.hash(pass, await bcrypt.genSalt(12)),
                         department,
                         permission,
@@ -181,7 +188,7 @@ class UserController{
                     updatedAt: Date.now(),
                     per: {
                         ...dataUser.per,
-                        username,
+                        username: username.toLowerCase(),
                         department,
                         permission,
                     },
@@ -199,7 +206,7 @@ class UserController{
                     updatedAt: Date.now(),
                     per: {
                         ...dataUser.per,
-                        username,
+                        username: username.toLowerCase(),
                         department,
                         permission,
                     },

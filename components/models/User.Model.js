@@ -5,7 +5,11 @@ const userSchema = mongoose.Schema({
     per: {
         // isAdmin: {type: Boolean, default: false},
         permission: {type: Number, default: 0},
-        username: String,
+        username: {
+            type: String,
+            lowercase: true,
+            trim: true,
+        },
         password: String,
         department: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'Department'}

@@ -40,3 +40,5 @@ const path = require('path');
 app.get('/', (req, res) => res.sendFile(path.join(__dirname,'/components/views/index.html')))
 // Err
 app.get('*', (req, res) => res.status(404).sendFile(path.join(__dirname,'/components/views/index.html')))
+
+// Author: qnp //

@@ -32,7 +32,7 @@ class UserController{
             return res.json({success: false, msg: 'Not found userID!'})
         else{
             const post = await Post.find({author: userId})
-            .sort({createdAt: -1})
+            // .sort({createdAt: -1})
             .skip(10*limit)
             .limit(10)
             .populate('author', 'name avatar')
@@ -117,17 +117,21 @@ class UserController{
             return res.json({success: false, msg: 'Somethings wrong!'})
 
         if(per >= 2 || id === userId){
-            await User.findById(userId).then(response=> {
-                if(response !== null){
-                    const linkImg = response.avatar.split('/')
-                    const path = './public/images/' + linkImg[linkImg.length - 1]
-                    if (fs.existsSync(path)) {
-                        fs.unlink(path, err => {
-                        })
-                    }
-                }else
-                    return res.json({success: false, msg: 'Somethings wrong!'})
-            })
+            if(process.env.SERVER_IMAGE_SAVE === 'cloudinary'){
+
+            }else{
+                await User.findById(userId).then(response=> {
+                    if(response !== null){
+                        const linkImg = response.avatar.split('/')
+                        const path = './public/images/' + linkImg[linkImg.length - 1]
+                        if (fs.existsSync(path)) {
+                            fs.unlink(path, err => {
+                            })
+                        }
+                    }else
+                        return res.json({success: false, msg: 'Somethings wrong!'})
+                })
+            }
 
             await User.findByIdAndUpdate(userId, {
                 avatar: avatar.trim(),
