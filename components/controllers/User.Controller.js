@@ -32,7 +32,7 @@ class UserController{
             return res.json({success: false, msg: 'Not found userID!'})
         else{
             const post = await Post.find({author: userId})
-            // .sort({createdAt: -1})
+            .sort({createdAt: -1, updatedAt: -1})
             .skip(10*limit)
             .limit(10)
             .populate('author', 'name avatar')

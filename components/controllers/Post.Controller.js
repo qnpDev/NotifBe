@@ -7,7 +7,7 @@ class PostController{
     async index(req, res){
         const { limit } = req.query
         const post = await Post.find()
-            // .sort({createdAt: -1})
+            .sort({createdAt: -1, updatedAt: -1})
             .skip(10*limit)
             .limit(10)
             .populate('author', 'name avatar')
