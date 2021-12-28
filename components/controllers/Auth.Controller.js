@@ -34,7 +34,7 @@ class Auth{
                     })
                     await User.findOneAndUpdate({
                         'per.username' : username.toLowerCase(),
-                        'per.isAdmin' : true,
+                        // 'per.isAdmin' : true,
                         }, {
                             $push: {
                                 refreshToken: refreshToken,
